@@ -1,0 +1,86 @@
+server:
+    # Listen on localhost for Pi-hole queries
+    interface: 127.0.0.1
+    interface: ::1
+    port: 5335
+
+    prefer-ip6: no
+    do-ip6: yes
+
+    use-caps-for-id: no
+    harden-glue: yes
+
+    # Access control
+    access-control: 127.0.0.1/32 allow
+    access-control: ::1/128 allow
+    access-control: 0.0.0.0/0 refuse
+    access-control: ::/0 refuse
+
+    # Performance tuning
+    num-threads: {{ unbound_num_threads | default(1) }}
+    msg-cache-slabs: {{ unbound_msg_cache_slabs | default(4) }}
+    rrset-cache-slabs: {{ unbound_rrset_cache_slabs | default(4) }}
+    infra-cache-slabs: {{ unbound_infra_cache_slabs | default(4) }}
+    key-cache-slabs: {{ unbound_key_cache_slabs | default(4) }}
+    so-rcvbuf: 1m
+    
+    # Cache settings
+    rrset-cache-size: {{ unbound_rrset_cache_size | default('256m') }}
+    msg-cache-size: {{ unbound_msg_cache_size | default('128m') }}
+    
+    # Prefetch frequently used items
+    prefetch: yes
+    prefetch-key: yes
+
+    # Privacy and security
+    hide-identity: yes
+    hide-version: yes
+    qname-minimisation: yes
+    minimal-responses: yes
+    
+    # Use root hints
+    root-hints: /var/lib/unbound/root.hints
+    
+    # DNS-over-TLS settings
+    tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+    harden-dnssec-stripped: yes
+    
+    # Logging (adjust verbosity as needed)
+    verbosity: {{ unbound_verbosity | default(0) }}
+    log-queries: {{ unbound_log_queries | default('no') }}
+    
+    # Prevent DNS rebinding attacks
+    private-address: 10.0.0.0/8
+    private-address: 172.16.0.0/12
+    private-address: 192.168.0.0/16
+    private-address: 169.254.0.0/16
+    private-address: fd00::/8
+    private-address: fe80::/10
+    
+    # Ensure no reverse queries to non-public IP ranges (RFC6303 4.2)
+    private-address: 192.0.2.0/24
+    private-address: 198.51.100.0/24
+    private-address: 203.0.113.0/24
+    private-address: 255.255.255.255/32
+    private-address: 2001:db8::/32
+
+# DNS-over-TLS upstream servers
+forward-zone:
+    name: "."
+    
+    # Cloudflare DNS-over-TLS
+    forward-addr: 1.1.1.1@853#cloudflare-dns.com
+    forward-addr: 1.0.0.1@853#cloudflare-dns.com
+    forward-addr: 2606:4700:4700::1111@853#cloudflare-dns.com
+    forward-addr: 2606:4700:4700::1001@853#cloudflare-dns.com
+    
+    # Quad9 DNS-over-TLS (uncomment to use)
+    # forward-addr: 9.9.9.9@853#dns.quad9.net
+    # forward-addr: 149.112.112.112@853#dns.quad9.net
+    
+    # Google DNS-over-TLS (uncomment to use)
+    # forward-addr: 8.8.8.8@853#dns.google
+    # forward-addr: 8.8.4.4@853#dns.google
+    
+    forward-tls-upstream: yes
+

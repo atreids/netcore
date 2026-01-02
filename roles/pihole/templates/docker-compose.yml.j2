@@ -4,14 +4,17 @@ services:
     image: pihole/pihole:latest
     restart: unless-stopped
     network_mode: host
+    hostname: "pihole-netcore"
     environment:
       TZ: "{{ pihole_timezone }}"
       FTLCONF_webserver_api_password: "{{ pihole_webpassword }}"
-      FTLCONF_dns_upstreams: "{{ pihole_dns1 }};{{ pihole_dns2 }}"
+      FTLCONF_dns_upstreams: "127.0.0.1#5335"
       FTLCONF_dns_listeningMode: "SINGLE"
-      FTLCONF_dns_interface: "eth0"
+      FTLCONF_dns_interface: "ens18" # Ensure correct
+      FTLCONF_dns_dnssec: "false"
     volumes:
       - ./etc-pihole/:/etc/pihole/
+      - ./etc-dnsmasq.d:/etc/dnsmasq.d/
     cap_add:
       - NET_ADMIN
       - SYS_TIME

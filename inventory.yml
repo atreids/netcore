@@ -1,26 +1,5 @@
-raspberries:
-  hosts:
-    pi3:
-      ansible_host: REDACTED
-      ansible_user: REDACTED
-      ansible_ssh_private_key_file: REDACTED
-    pi5:
-      ansible_host: REDACTED
-      ansible_user: REDACTED
-      ansible_ssh_private_key_file: REDACTED
-    pi02w:
-      ansible_host: REDACTED
-      ansible_user: REDACTED
-      ansible_ssh_private_key_file: REDACTED
-
 homelab:
-  children:
-    raspberries:
-
-dev:
   hosts:
-    pivm:
-      ansible_host: REDACTED
-      ansible_user: REDACTED
-      ansible_ssh_private_key_file: REDACTED
-
+    netcore:
+      ansible_host: netcore.rogue-net.com
+      ansible_user: archon
