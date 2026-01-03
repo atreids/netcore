@@ -1,5 +1,8 @@
-homelab:
+netcores:
   hosts:
+    netcore-backup:
+      ansible_host: netcore-backup.rogue-net.com
+      ansible_user: netops
     netcore:
       ansible_host: netcore.rogue-net.com
-      ansible_user: archon
+      ansible_user: netops

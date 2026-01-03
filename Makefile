@@ -1,15 +1,14 @@
 ping:
-	ansible -m ping homelab
+	ansible -m ping netcores
 
-provision:
-	ansible-playbook playbook.yml --ask-become-pass --ask-vault-pass
+provision-netcore-backup:
+	ansible-playbook netcore-backup-playbook.yml --ask-become-pass --ask-vault-pass
 
-provision-pve:
-	ansible-playbook pve-playbook.yml --ask-become-pass --ask-vault-pass
+provision-netcore:
+	ansible-playbook netcore-playbook.yml --ask-become-pass --ask-vault-pass
 
 vault-decrypt:
 	ansible-vault decrypt group_vars/vault.yml
 
 vault-encrypt:
 	ansible-vault encrypt group_vars/vault.yml
-

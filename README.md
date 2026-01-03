@@ -9,12 +9,23 @@ This repo contains ansible playbooks + roles for netcore setup.
 
 ## Prerequisites
 
-- A Debian 13+ server that you have SSH access to.
+- A Debian 13+ server (Works on Raspberyy Pi OS too) that you have SSH access to.
 - Ansible installed.
+
+## Provision
+
+> Check IP/Domains and username's in the [inventory](./inventory.yml) are correct.
+
+Simply run:
+
+* `make provision-netcore`
+* `make provision-netcore-backup`
 
 ## Manual steps required
 
 For the Pi-hole you still have to manually add any additional block lists (see [blocklists](./blocklists.txt)) and then update the Gravity DB. Also, any reverse servers (otherwise known as conditional forwarding) needs to be enabled (See [list](rev_servers)).
+
+You may also want to add some local DNS entries into the Pi-hole dashboard for certain network devices (e.g managed switches that are not auto discovered via DHCP).
 
 ## General Steps
 
@@ -37,4 +48,4 @@ The server's firewall will deny all incoming traffic except on ports:
 - 443 (HTTPS access to Pi-hole console)
 - 53 (Incoming DNS requests to Pi-hole FTL server)
 
-Internally Unbound will be listening on port 5335. Pi-hole will foward all requests to Unbound and Unbound will perform an encrypted recursive DNS lookup via port 853.
+Internally Unbound will be listening on port 5335. Pi-hole will foward all requests to Unbound and Unbound will perform an encrypted DNS lookup using Cloudflare via port 853.

@@ -1,0 +1,15 @@
+# Provision Netcore server (Debian 13+ host required)
+- name: Provision PVE Netcore
+  hosts: netcore
+  become: true
+  vars:
+    eth_interface_name: "ens18"
+    pihole_hostname: "netcore"
+  vars_files:
+    - group_vars/vault.yml
+  roles:
+    - role: debian-base
+    - role: debian-ufw-firewall
+    - role: docker
+    - role: unbound
+    - role: pihole

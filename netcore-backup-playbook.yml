@@ -1,0 +1,16 @@
+# Raspbian based OS but still works with Debian roles
+- name: Provision backup Pi-hole server
+  hosts: netcore-backup
+  become: true
+  vars:
+    eth_interface_name: "eth0"
+    pihole_hostname: "netcore-backup"
+  vars_files:
+    - group_vars/vault.yml
+  roles:
+    - role: debian-base
+    - role: debian-ufw-firewall
+    - role: log2ram #log2ram to protect SSD flash drive
+    - role: docker
+    - role: unbound
+    - role: pihole

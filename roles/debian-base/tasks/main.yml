@@ -20,10 +20,22 @@
 - name: Disable SSH root login
   ansible.builtin.lineinfile:
     path: /etc/ssh/ssh_config
-    line: 'PermitRootLogin=no'
+    line: "PermitRootLogin=no"
     state: present
 
-- name: Install common packages
+- name: Disable SSH password auth
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/ssh_config
+    line: "PasswordAuthentication=no"
+    state: present
+
+- name: Allow pubkey SSH login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/ssh_config
+    line: "PubkeyAuthentication=yes"
+    state: present
+
+- name: Install base utils
   ansible.builtin.apt:
     name:
       - vim

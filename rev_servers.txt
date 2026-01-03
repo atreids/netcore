@@ -5,5 +5,4 @@ true,10.1.66.0/24,10.1.66.1,rogue-net.com
 true,10.1.1.0/24,10.1.1.1,rogue-net.com
 true,10.1.50.0/24,10.1.50.1,rogue-net.com
 
-
 Add these to rev server/conditional forwarding in pihole console.
