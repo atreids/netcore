@@ -1,0 +1,11 @@
+unbound_num_threads: 1
+unbound_msg_cache_slabs: 4
+unbound_rrset_cache_slabs: 4
+unbound_infra_cache_slabs: 4
+unbound_key_cache_slabs: 4
+unbound_rrset_cache_size: "256m"
+unbound_msg_cache_size: "128m"
+
+# Logging
+unbound_verbosity: 0
+unbound_log_queries: "no"

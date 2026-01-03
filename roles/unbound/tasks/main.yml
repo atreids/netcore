@@ -1,0 +1,67 @@
+- name: Install Unbound recursive DNS server
+  apt:
+    name: unbound
+    state: present
+    update_cache: yes
+
+- name: Make sure ca-certificates is installed
+  apt:
+    name: ca-certificates
+    state: present
+    update_cache: yes
+
+- name: Download root hints file
+  get_url:
+    url: https://www.internic.net/domain/named.root
+    dest: /var/lib/unbound/root.hints
+    owner: unbound
+    group: unbound
+    mode: "0644"
+  notify: restart unbound
+
+- name: Download root hints file
+  get_url:
+    url: https://www.internic.net/domain/named.root
+    dest: /var/lib/unbound/root.hints
+    owner: unbound
+    group: unbound
+    mode: "0644"
+  notify: restart unbound
+
+- name: Configure Unbound for Pi-hole with DNS-over-TLS
+  template:
+    src: pi-hole.conf.j2
+    dest: /etc/unbound/unbound.conf.d/pi-hole.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart unbound
+
+- name: Disable systemd-resolved (if active)
+  systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+  when: ansible_facts.services['systemd-resolved.service'] is defined
+  ignore_errors: yes
+
+- name: Allow UFW Unbound Upstream
+  community.general.ufw:
+    rule: allow
+    port: "853"
+    proto: tcp
+    direction: out
+    comment: "Unbound DNS-over-TLS"
+  when: ansible_facts.services['ufw.service'] is defined
+
+- name: Enable and start Unbound service
+  systemd:
+    name: unbound
+    state: started
+    enabled: yes
+
+- name: Test Unbound configuration
+  command: unbound-checkconf
+  register: unbound_check
+  changed_when: false
+  failed_when: unbound_check.rc != 0

@@ -2,6 +2,8 @@
   ansible.builtin.file:
     path: /opt/pihole
     state: directory
+    owner: root
+    group: root
     mode: 0755
 
 - name: Allow UFW Pi-hole DNS + HTTP/HTTPS
@@ -9,14 +11,16 @@
     rule: allow
     port: "{{ item }}"
   loop:
-    - "53"      # DNS
-    - "80"      # HTTP
-    - "443"     # HTTPS
+    - "53" # DNS
+    - "80" # HTTP
+    - "443" # HTTPS
 
 - name: Copy docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: /opt/pihole/docker-compose.yml
+    owner: root
+    group: root
     mode: 0644
 
 - name: Start Pi-hole container
