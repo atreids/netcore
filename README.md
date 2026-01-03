@@ -27,6 +27,13 @@ For the Pi-hole you still have to manually add any additional block lists (see [
 
 You may also want to add some local DNS entries into the Pi-hole dashboard for certain network devices (e.g managed switches that are not auto discovered via DHCP).
 
+## Vault management
+
+Vault can be encrypted/decrypted using:
+
+* `make vault-encrypt`
+* `make vault-decrypt`
+
 ## General Steps
 
 - Updates all packages.
